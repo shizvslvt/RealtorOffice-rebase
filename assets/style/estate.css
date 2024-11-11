@@ -1,0 +1,158 @@
+
+.estates-grid {
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: flex-start;
+    overflow-y: auto;
+    padding: 10px 0 25px 0;
+    box-sizing: border-box;
+}
+
+.estate {
+    max-height: max-content;
+    height: auto;
+    background: var(--main-block-background-color);
+    width: calc(25% - 20px);
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.estate-button-container {
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    margin-top: auto;
+    text-align: right;
+}
+
+button {
+    font-weight: bold;
+    margin-top: 1em;
+    font-size: 15px;
+    padding: 10px 20px;
+    border-width: 0;
+    border-radius: 10px;
+    background-color: var(--additionally-color);
+    color: var(--main-button-color);
+    transition: 0.35s ease-out;
+}
+
+button:hover, button:focus {
+    background-color: var(--additionally-color);
+    transform: scale(0.95);
+    box-shadow: 0 0 10px var(--additionally-color);
+}
+
+
+.estate-title {
+    padding: 5px;
+    height: 40px;
+    color: var(--main-white);
+    font-weight: bold;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+
+}
+
+.estate-attribute-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.estate-attributes {
+    margin-top: 10px;
+    color: #ece2e2;
+}
+
+.estate-value {
+    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.estate-rows {
+    display: flex;
+    justify-content: space-between;
+}
+
+.estate-rows-left,
+.estate-rows-right {
+    width: 49%;
+    display: flex;
+    flex-direction: column;
+}
+
+.estate-attribute-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.estate-attributes {
+    font-size: calc(0.85em);
+    color: #e7fde5;
+}
+
+.estate-value {
+    font-size: calc(0.8em);
+    color: rgba(255, 255, 255, 0.5);
+}
+
+
+.estate:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+@media (max-width: 1895px) {
+    .estate {
+        width: calc(33.33% - 20px);
+    }
+}
+
+@media (max-width: 1435px) {
+    .estate {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 985px) {
+    .estates-grid {
+        padding: 10px 10px 10px 0;
+    }
+
+    .estate {
+        width: 100%;
+    }
+}
+
+.estates-grid::-webkit-scrollbar {
+    width: 8px;
+}
+
+.estates-grid::-webkit-scrollbar-thumb {
+    background-color: var(--main-block-background-color);
+    border-radius: 10px;
+}
+
+.estates-grid::-webkit-scrollbar-track {
+    background-color: #262525;
+    border-radius: 8px;
+}
+
+.estates-grid::-webkit-scrollbar-thumb:hover {
+    background-color: var(--additionally-color);
+}
+
+.estate a {
+    text-decoration: none;
+    color: inherit;
+}
+
