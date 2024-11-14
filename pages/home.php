@@ -1,3 +1,3 @@
 <?php
 global $estate;
-$estate->displayEstatesAcceptedAndActivated();
+$estate->displayHomePageEstates();

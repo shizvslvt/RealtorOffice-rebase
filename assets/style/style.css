@@ -5,11 +5,11 @@
     --main-white: #fff;
     --main-text-color: rgba(255, 255, 255, 0.5);
     --main-text-hover-color: rgb(255, 255, 255);
-    --additionally-color: #c5ffdb;
+    --additionally-color: rgba(219, 255, 235, 0.86);
 
 
 
-    --not-set-color: rgb(255, 123, 234);
+    --not-set-color: rgb(255, 123, 123);
 
 
     --main-button-color: #505050;
@@ -17,7 +17,7 @@
 
     --theme-color-boxShadow: rgba(0, 0, 0, 0.65);
 
-    --main-shadow: 10px 10px 20px var(--theme-color-boxShadow);
+    --main-shadow: 5px 5px 10px var(--theme-color-boxShadow);
 
 }
 
@@ -31,7 +31,7 @@ body {
 
 .main {
     margin: 2% auto;
-    width: 80%;
+    width: 85%;
     height: 85%;
     padding: 25px;
     background: var(--main-background-color);

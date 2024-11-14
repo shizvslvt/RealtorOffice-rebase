@@ -4,18 +4,15 @@
 
 class Estate {
 
-    private array $all_estates = [];
-    public function displayEstatesAcceptedAndActivated(): void
+    public function displayHomePageEstates(): void
     {
         global $theme, $db_controller;
-        $this->all_estates = $db_controller->getAllEstates();
+        $all_estates = $db_controller->getHomePageEstates();
         echo '<div class="estates-grid">';
-        foreach ($this->all_estates as $estate) {
-            if ($estate['accepted'] != null && $estate['archived'] == 0) {
-                    $theme->assign("status", "activated");
+        foreach ($all_estates as $estate) {
+                    $theme->assign("status", "home");
                     $theme->assign('estate', $estate);
                     $theme->display('estate.tpl');
-                }
             }
         echo '</div>';
     }
@@ -32,9 +29,9 @@ class Estate {
     public function displayEstatesForAccept(): void
     {
         global $theme, $db_controller;
-        $this->all_estates = $db_controller->getAllEstates();
+        $all_estates = $db_controller->getAllEstates();
         echo '<div class="estates-grid">';
-        foreach ($this->all_estates as $estate) {
+        foreach ($all_estates as $estate) {
             if($estate['accepted'] == null && $estate['archived'] == 0) {
             $theme->assign("status", "for-accept");
             $theme->assign('estate', $estate);
@@ -53,9 +50,9 @@ class Estate {
     public function displayRealtorWaitingDealsEstates($realtor_id): void
     {
         global $theme, $db_controller;
-        $this->all_estates = $db_controller->displayRealtorWaitingDealsEstates($realtor_id);
+        $all_estates = $db_controller->displayRealtorWaitingDealsEstates($realtor_id);
         echo '<div class="estates-grid">';
-        foreach ($this->all_estates as $estate) {
+        foreach ($all_estates as $estate) {
                 $theme->assign("status", "waiting-deals");
                 $theme->assign('estate', $estate);
                 $theme->display('estate.tpl');

@@ -27,24 +27,25 @@ require_once CLASSES_PATH . '/Auth.php';
 require_once CLASSES_PATH . '/User.php';
 require_once CLASSES_PATH . '/Realtor.php';
 require_once CLASSES_PATH . '/Estate.php';
+require_once CLASSES_PATH . '/Chats.php';
 require_once CONTROLLERS_PATH . '/DatabaseController.php';
 
 
 // ---------------------------------------------------
-// GLOBALS and setup classes
+// setup
 // ---------------------------------------------------
-global $theme, $auth, $user, $realtors, $db_controller, $admins_id;
-
 $theme = Theme::templater();
-
 
 $user = new User();
 $auth = new Auth();
 $realtors = new Realtor();
 $estate = new Estate();
+$chats = new Chats();
 
 $db_controller = new DatabaseController();
 
 $admins_id = array('1', '23');
+
+$access_level = $user->getAccessLevel();
 
 

@@ -8,17 +8,18 @@ $page = match ($page) {
     'register' => 'register',
     'register-realtor' => 'register-realtor',
     'estate' => 'estate',
+    'logout' => 'logout',
+    'profile' => 'profile',
+    'for-accept' => 'for-accept',
+    'accept-estate' => 'accept-estate',
+    'waiting-deals' => 'waiting-deals',
+
+
     'add-estate' => 'add-estate',
     'edit-estate' => 'edit-estate',
     'chats' => 'chats',
     'buy-estate' => 'buy-estate',
     'control-panel' => 'control-panel',
-    'logout' => 'logout',
-    'profile' => 'profile',
-
-    'for-accept' => 'for-accept',
-    'accept-estate' => 'accept-estate',
-    'waiting-deals' => 'waiting-deals',
 
     default => '404',
 };
@@ -27,6 +28,24 @@ echo "<div class='main'>";
 include_once PAGES_PATH . "/{$page}.php";
 echo "</div>";
 
+
+
+echo "<div class='footer' style='position: fixed; bottom: 20px'>";
 echo $time = date('Y-m-d H:i:s') . " | ";
-if($_COOKIE['uid']) echo $_COOKIE['uid'];
+if(isset($_COOKIE['uid'])) {
+    echo "uid: " . $_COOKIE['uid']. " | ";
+    global $access_level;
+    switch($access_level) {
+        case 3:
+            echo "Admin";
+            break;
+        case 2:
+            echo "Realtor";
+            break;
+        case 1:
+            echo "User";
+            break;
+    }
+}
+echo "</div>";
 
