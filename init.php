@@ -28,6 +28,7 @@ require_once CLASSES_PATH . '/User.php';
 require_once CLASSES_PATH . '/Realtor.php';
 require_once CLASSES_PATH . '/Estate.php';
 require_once CLASSES_PATH . '/Chats.php';
+require_once CLASSES_PATH . '/Logs.php';
 require_once CONTROLLERS_PATH . '/DatabaseController.php';
 
 
@@ -41,6 +42,7 @@ $auth = new Auth();
 $realtors = new Realtor();
 $estate = new Estate();
 $chats = new Chats();
+$logs = new Logs();
 
 $db_controller = new DatabaseController();
 

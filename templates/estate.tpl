@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="../assets/style/estate.css">
-
 <div class="estate">
     <a href="?p=estate&id={$estate.id}">
         <div class="estate-title">{$estate.title}</div>
@@ -59,20 +58,32 @@
         </div>
     </a>
 
-
-    {if $status == "by-id"}
-        <div class="estate-button-container">
-            <a href="?p=chats&id={$estate.id}">
-                <button>Chat</button>
-            </a>
-        </div>
-    {/if}
-    {if $status == "for-accept"}
-        <div class="estate-button-container">
-            <a href="?p=accept-estate&id={$estate.id}">
-                <button>Accept</button>
-            </a>
-        </div>
+    {if $status != "realtor"}
+        {if $status == "by-id"}
+            <div class="estate-button-container">
+                {if $chat_id}
+                    <a href="?p=chats&c=buy&id={$chat_id}">
+                        <button>Chat</button>
+                    </a>
+                {else}
+                    <a href="?p=chats&a=create-chat&id={$estate.id}">
+                        <button>Create Chat</button>
+                    </a>
+                {/if}
+            </div>
+        {elseif $status == "for-accept"}
+            <div class="estate-button-container">
+                <a href="?p=accept-estate&id={$estate.id}">
+                    <button>Accept</button>
+                </a>
+            </div>
+        {elseif $status == "buy" && $buyer && $checksold}
+            <div class="estate-button-container">
+                <a href="?p=buy-estate&id={$estate.id}">
+                    <button>Buy</button>
+                </a>
+            </div>
+        {/if}
     {/if}
 </div>
 

@@ -13,13 +13,13 @@ $page = match ($page) {
     'for-accept' => 'for-accept',
     'accept-estate' => 'accept-estate',
     'waiting-deals' => 'waiting-deals',
-
-
-    'add-estate' => 'add-estate',
-    'edit-estate' => 'edit-estate',
     'chats' => 'chats',
     'buy-estate' => 'buy-estate',
-    'control-panel' => 'control-panel',
+
+
+//    'add-estate' => 'add-estate',
+//    'edit-estate' => 'edit-estate',
+//    'control-panel' => 'control-panel',
 
     default => '404',
 };
@@ -27,6 +27,9 @@ include_once PAGES_PATH . "/header.php";
 echo "<div class='main'>";
 include_once PAGES_PATH . "/{$page}.php";
 echo "</div>";
+
+
+
 
 
 

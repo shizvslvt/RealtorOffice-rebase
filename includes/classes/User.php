@@ -30,6 +30,11 @@ class User
         return 0;
     }
 
+    public function getBalance( $id)
+    {
+        global $db_controller;
+        return $db_controller->getBalance($id);
+    }
 
 
 }

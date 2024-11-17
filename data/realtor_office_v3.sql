@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2024 at 05:14 PM
+-- Generation Time: Nov 17, 2024 at 11:36 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -105,6 +105,41 @@ INSERT INTO `list_types` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ro_chats`
+--
+
+CREATE TABLE `ro_chats` (
+  `id` int(11) NOT NULL,
+  `estate_id` int(11) DEFAULT NULL,
+  `buyer_id` int(11) DEFAULT NULL,
+  `time` datetime DEFAULT NULL,
+  `sold` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ro_chats`
+--
+
+INSERT INTO `ro_chats` (`id`, `estate_id`, `buyer_id`, `time`, `sold`) VALUES
+(1, 1, 2, '2022-02-18 14:15:22', NULL),
+(2, 3, 2, '2022-03-04 17:10:32', NULL),
+(3, 2, 4, '2022-03-08 10:14:19', NULL),
+(4, 4, 8, '2022-03-30 17:12:03', NULL),
+(5, 4, 5, '2022-04-03 11:15:05', NULL),
+(6, 5, 12, '2022-07-13 09:12:41', NULL),
+(7, 7, 11, '2022-08-05 14:15:28', NULL),
+(8, 6, 11, '2022-08-05 18:02:47', NULL),
+(9, 6, 6, '2022-08-06 13:53:20', NULL),
+(10, 8, 12, '2022-09-10 14:06:39', NULL),
+(11, 10, 10, '2022-11-04 15:23:48', NULL),
+(12, 14, 18, '2023-03-27 10:17:21', NULL),
+(13, 9, 16, '2023-04-01 12:06:44', NULL),
+(14, 12, 21, '2023-04-07 15:37:23', NULL),
+(15, 10, 15, '2023-04-10 09:42:10', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ro_estates`
 --
 
@@ -132,11 +167,11 @@ CREATE TABLE `ro_estates` (
 
 INSERT INTO `ro_estates` (`id`, `seller_id`, `realtor_id`, `title`, `cost`, `time`, `accepted`, `archived`, `description`, `city_id`, `locality_id`, `type_id`, `area`, `bedrooms`, `floors`) VALUES
 (1, 3, 7, 'Трехкомнатная квартира в центре города', 45000, '2021-09-15 18:53:13', '2022-02-14 09:06:28', 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 10, 1, 2, 95, 3, 11),
-(2, 6, 7, 'Двухэтажный дом с панорамным видом', 32000, '2022-01-11 17:27:16', '2022-02-19 14:12:34', 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 14, 2, 2, 140, 5, 2),
-(3, 6, 7, 'Дом в живописном районе с большим участком', 83000, '2022-02-28 11:22:05', '2022-03-03 13:14:21', 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 14, 2, 2, 130, 4, 2),
+(2, 6, 7, 'Двухэтажный дом с панорамным видом', 32000, '2022-01-11 17:27:16', '2022-02-19 14:12:34', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 14, 2, 2, 140, 5, 2),
+(3, 6, 7, 'Дом в живописном районе с большим участком', 83000, '2022-02-28 11:22:05', '2022-03-03 13:14:21', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 14, 2, 2, 130, 4, 2),
 (4, 9, 7, 'Уютная квартира с дизайнерским ремонтом', 35000, '2022-03-23 09:15:09', '2022-03-28 14:13:05', 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 7, 2, 2, 75, 2, 5),
 (5, 14, 11, 'Современный пентхаус с видом на город', 60000, '2022-07-11 08:39:54', '2022-07-11 10:08:49', 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 4, 1, 2, 95, 2, 12),
-(6, 3, 11, 'Студия с панорамными окнами в центре', 47000, '2022-07-16 14:27:49', '2022-07-17 09:03:31', 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 10, 1, 2, 80, 2, 3),
+(6, 3, 11, 'Студия с панорамными окнами в центре', 47000, '2022-07-16 14:27:49', '2022-07-17 09:03:31', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 10, 1, 2, 80, 2, 3),
 (7, 15, 7, 'Квартира в историческом центре города', 77000, '2022-08-01 12:20:45', '2022-08-04 12:20:45', 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 1, 1, 2, 115, 2, 2),
 (8, 14, 11, 'Большая квартира с террасой и видом на парк', 73000, '2022-09-09 15:44:25', '2022-09-10 09:11:31', 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 4, 1, 2, 110, 4, 4),
 (9, 6, 7, 'Элитный загородный дом с бассейном', 147000, '2022-10-15 10:21:18', '2022-10-18 14:13:08', 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 14, 2, 1, 300, 6, 3),
@@ -150,29 +185,6 @@ INSERT INTO `ro_estates` (`id`, `seller_id`, `realtor_id`, `title`, `cost`, `tim
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ro_estates_deals`
---
-
-CREATE TABLE `ro_estates_deals` (
-  `id` int(11) NOT NULL,
-  `estate_id` int(11) DEFAULT NULL,
-  `buyer_id` int(11) DEFAULT NULL,
-  `time` datetime DEFAULT NULL,
-  `sold` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `ro_estates_deals`
---
-
-INSERT INTO `ro_estates_deals` (`id`, `estate_id`, `buyer_id`, `time`, `sold`) VALUES
-(1, 1, 2, '2022-02-15 12:09:44', NULL),
-(2, 6, 2, '2022-07-15 11:12:34', NULL),
-(3, 2, 4, '2022-08-11 15:22:22', NULL);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `ro_logs`
 --
 
@@ -180,9 +192,10 @@ CREATE TABLE `ro_logs` (
   `id` int(11) NOT NULL,
   `type` text DEFAULT NULL,
   `link` text DEFAULT NULL,
-  `deal_id` int(11) DEFAULT NULL,
+  `chat_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `time` datetime NOT NULL
+  `time` datetime NOT NULL,
+  `desc` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -193,11 +206,25 @@ CREATE TABLE `ro_logs` (
 
 CREATE TABLE `ro_messages` (
   `id` int(11) NOT NULL,
-  `deal_id` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `message` text DEFAULT NULL,
-  `time` datetime DEFAULT NULL
+  `chat_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ro_messages`
+--
+
+INSERT INTO `ro_messages` (`id`, `chat_id`, `user_id`, `message`, `time`) VALUES
+(19, 1, 2, 'hi', '2024-11-17 15:47:02'),
+(20, 1, 3, 'hello', '2024-11-17 15:49:49'),
+(21, 1, 7, 'hi everyone', '2024-11-17 15:50:02'),
+(22, 1, 2, 'bye bye', '2024-11-17 15:50:49'),
+(23, 2, 2, 'покупаю', '2024-11-17 15:55:25'),
+(24, 2, 6, 'вот прямо сейчас?', '2024-11-17 15:56:05'),
+(27, 2, 6, 'честно?', '2024-11-17 16:03:07'),
+(28, 2, 7, 'вполне возможно', '2024-11-17 16:03:34');
 
 -- --------------------------------------------------------
 
@@ -243,7 +270,7 @@ CREATE TABLE `ro_users` (
 
 INSERT INTO `ro_users` (`id`, `name`, `mail`, `password`, `birthday`, `PID`, `balance`, `time`) VALUES
 (1, 'admin1', 'admin1@gmail.com', 'admin1', '2000-01-01', 200000000, 0, '2021-01-01 00:00:00'),
-(2, 'Іван Авраменко', 'ivan.avramenko@gmail.com', 'password', '2002-07-21', 200207217, 0, '2021-09-01 08:12:34'),
+(2, 'Іван Авраменко', 'ivan.avramenko@gmail.com', 'password', '2002-07-21', 200207217, 0, '2021-09-01 08:12:35'),
 (3, 'Анастасія Анайко', 'anastasia.anaiko@gmail.com', 'password', '2001-08-13', 200108134, 0, '2021-09-15 13:45:22'),
 (4, 'Катерина Вербицька', 'kateryna.verbytska@gmail.com', 'password', '2002-03-03', 200203035, 0, '2021-10-07 14:25:33'),
 (5, 'Данило Глаголєв', 'danylo.hlaholev@gmail.com', 'password', '2001-11-29', 200111297, 0, '2021-10-22 16:20:18'),
@@ -289,6 +316,14 @@ ALTER TABLE `list_types`
   ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
+-- Indexes for table `ro_chats`
+--
+ALTER TABLE `ro_chats`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_ro_estates_deals_ro_users` (`buyer_id`),
+  ADD KEY `FK_ro_estates_deals_ro_estates_new` (`estate_id`);
+
+--
 -- Indexes for table `ro_estates`
 --
 ALTER TABLE `ro_estates`
@@ -300,28 +335,20 @@ ALTER TABLE `ro_estates`
   ADD KEY `idx_type_id_ro_estates` (`type_id`) USING BTREE;
 
 --
--- Indexes for table `ro_estates_deals`
---
-ALTER TABLE `ro_estates_deals`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_ro_estates_deals_ro_users` (`buyer_id`),
-  ADD KEY `FK_ro_estates_deals_ro_estates_new` (`estate_id`);
-
---
 -- Indexes for table `ro_logs`
 --
 ALTER TABLE `ro_logs`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_ro_logs_ro_users` (`user_id`),
-  ADD KEY `FK_ro_logs_ro_estates_deals` (`deal_id`);
+  ADD KEY `FK_ro_logs_ro_estates_deals` (`chat_id`) USING BTREE;
 
 --
 -- Indexes for table `ro_messages`
 --
 ALTER TABLE `ro_messages`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_ro_messages_ro_estates_deals` (`deal_id`),
-  ADD KEY `FK_ro_messages_ro_users` (`user_id`);
+  ADD KEY `FK_ro_messages_ro_users` (`user_id`),
+  ADD KEY `FK_ro_messages_ro_estates_deals` (`chat_id`) USING BTREE;
 
 --
 -- Indexes for table `ro_realtors`
@@ -359,16 +386,16 @@ ALTER TABLE `list_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `ro_chats`
+--
+ALTER TABLE `ro_chats`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
 -- AUTO_INCREMENT for table `ro_estates`
 --
 ALTER TABLE `ro_estates`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
---
--- AUTO_INCREMENT for table `ro_estates_deals`
---
-ALTER TABLE `ro_estates_deals`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `ro_logs`
@@ -380,7 +407,7 @@ ALTER TABLE `ro_logs`
 -- AUTO_INCREMENT for table `ro_messages`
 --
 ALTER TABLE `ro_messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `ro_users`
@@ -393,6 +420,13 @@ ALTER TABLE `ro_users`
 --
 
 --
+-- Constraints for table `ro_chats`
+--
+ALTER TABLE `ro_chats`
+  ADD CONSTRAINT `FK_ro_estates_deals_ro_estates_new` FOREIGN KEY (`estate_id`) REFERENCES `ro_estates` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_ro_estates_deals_ro_users` FOREIGN KEY (`buyer_id`) REFERENCES `ro_users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
 -- Constraints for table `ro_estates`
 --
 ALTER TABLE `ro_estates`
@@ -403,24 +437,17 @@ ALTER TABLE `ro_estates`
   ADD CONSTRAINT `FK_ro_estates_users` FOREIGN KEY (`seller_id`) REFERENCES `ro_users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `ro_estates_deals`
---
-ALTER TABLE `ro_estates_deals`
-  ADD CONSTRAINT `FK_ro_estates_deals_ro_estates_new` FOREIGN KEY (`estate_id`) REFERENCES `ro_estates` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_ro_estates_deals_ro_users` FOREIGN KEY (`buyer_id`) REFERENCES `ro_users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Constraints for table `ro_logs`
 --
 ALTER TABLE `ro_logs`
-  ADD CONSTRAINT `FK_ro_logs_ro_estates_deals` FOREIGN KEY (`deal_id`) REFERENCES `ro_estates_deals` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_ro_logs_ro_estates_deals` FOREIGN KEY (`chat_id`) REFERENCES `ro_chats` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_ro_logs_ro_users` FOREIGN KEY (`user_id`) REFERENCES `ro_users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `ro_messages`
 --
 ALTER TABLE `ro_messages`
-  ADD CONSTRAINT `FK_ro_messages_ro_estates_deals` FOREIGN KEY (`deal_id`) REFERENCES `ro_estates_deals` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_ro_messages_ro_estates_deals` FOREIGN KEY (`chat_id`) REFERENCES `ro_chats` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_ro_messages_ro_users` FOREIGN KEY (`user_id`) REFERENCES `ro_users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --

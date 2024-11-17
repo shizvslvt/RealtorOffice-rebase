@@ -16,7 +16,7 @@
 .estate {
     height: fit-content;
     background: var(--main-block-background-color);
-    width: calc(25% - 20px);
+    width: fit-content;
     box-sizing: border-box;
     padding: 7px;
     border-radius: 10px;
@@ -27,13 +27,18 @@
     -webkit-box-shadow: var(--main-shadow);
 }
 
+.estates-grid .estate {
+    width: calc(25% - 20px);
+}
+
 .estate-title {
+    padding-left: 5px;
     height: 40px;
     padding-bottom: 5px;
     color: var(--main-white);
     font-weight: bold;
     overflow: hidden;
-    border-bottom: 1px solid var(--main-text-color);
+    border-bottom: 1px solid var(--additionally-color);
 }
 
 .estate-button-container {
@@ -44,7 +49,7 @@
 
 button {
     font-weight: bold;
-    margin-top: 1em;
+    margin-top: 10px;
     font-size: 15px;
     padding: 10px 20px;
     border-width: 0;
@@ -82,8 +87,8 @@ button:hover, button:focus {
 
 
 .estate-attributes {
-    font-size: calc(0.85em);
-    color: var(--additionally-color);
+    font-size: calc(0.8em);
+    color: var(--main-text-hover-color);
 }
 
 .estate-value {
@@ -97,14 +102,34 @@ button:hover, button:focus {
     transform: translateY(-5px);
 }
 
+.estates-grid-single {
+    width: calc(25% - 20px);
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    overflow-y: auto;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    box-sizing: border-box;
+}
+
 @media (max-width: 1850px) {
-    .estate {
+    .estates-grid .estate {
         width: calc(33.33% - 15px);
     }
+    .estates-grid-single {
+        width: calc(33.33% - 15px);
+    }
+
 }
 
 @media (max-width: 1430px) {
-    .estate {
+    .estates-grid .estate {
+        width: calc(50% - 15px);
+    }
+    .estates-grid-single {
         width: calc(50% - 15px);
     }
 }
@@ -113,11 +138,15 @@ button:hover, button:focus {
     .estates-grid {
         padding: 10px 10px 10px 0;
     }
+    .estates-grid-single {
+        width: 100%;
+    }
 
-    .estate {
+    .estates-grid .estate {
         width: 100%;
     }
 }
+
 
 .estates-grid::-webkit-scrollbar {
     width: 8px;
@@ -141,4 +170,6 @@ button:hover, button:focus {
     text-decoration: none;
     color: inherit;
 }
+
+
 
