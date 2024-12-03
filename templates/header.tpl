@@ -14,7 +14,7 @@
             {/if}
         {if $access_level == 2}
             <a href="?p=for-accept"><div class="header-item">For Accept</div></a>
-            <a href="?p=waiting-deals"><div class="header-item">Waiting Deals</div></a>
+            <a href="?p=waiting-deals"><div class="header-item">Accepted</div></a>
         {/if}
         {if $access_level == 3}
             <a href="?p=control-panel"><div class="header-item">Control panel</div></a>

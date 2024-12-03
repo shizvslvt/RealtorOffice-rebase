@@ -19,18 +19,21 @@ class Estate
 
     public function displayEstate($estate_id): void
     {
-        global $theme, $db_controller, $user;
+        global $theme, $db_controller, $access_level;
         $estate = $db_controller->getEstateById($estate_id);
-        $access_level = $user->getAccessLevel();
+        if(!$estate) die("Estate not found");
+        $status = 'none';
         if ($access_level == 1) {
             $chat_id = $db_controller->getChatIdByEstateIdAndUID($estate_id, $_COOKIE['uid']);
             $theme->assign('chat_id', $chat_id);
-            $theme->assign("status", "by-id");
+            $status = 'by-id';
         } elseif ($access_level == 2) {
-            $theme->assign('status', 'realtor');
+            $status = 'realtor';
         }
+        if($db_controller->checkSoldEstate($estate_id)) $status = 'sold';
 
         $theme->assign('estate', $estate);
+        $theme->assign('status', $status);
         echo '<div class="estates-grid-single">';
         $theme->display('estate.tpl');
         echo '</div>';
@@ -78,8 +81,8 @@ class Estate
         $theme->assign("status", "buy");
         $theme->assign('buyer', $db_controller->getBuyerIdByEstateIdAndUID($estate_id, $_COOKIE['uid']));
         $theme->assign('estate', $estate);
-        $checksold = $db_controller->checkSoldEstate($estate_id);
-        $theme->assign('checksold', $checksold);
+        $check_sold = $db_controller->checkSoldEstate($estate_id);
+        $theme->assign('checksold', $check_sold);
         $theme->display('estate.tpl');
         echo '</div>';
         echo '</div>';
@@ -91,16 +94,52 @@ class Estate
         $db_controller->buyEstate($estate_id);
     }
 
-    public function getEstateCost(mixed $id)
+    public function getEstateCost($id)
     {
         global $db_controller;
         return $db_controller->getEstateCost($id);
     }
 
-    public function checkSoldEstate(mixed $id)
+    public function checkSoldEstate($id)
     {
         global $db_controller;
         return $db_controller->checkSoldEstate($id);
+    }
+
+    public function checkEstateAccessLevelForBuyer($id)
+    {
+        global $db_controller;
+        return $db_controller->checkEstateAccessLevelForBuyer($id);
+    }
+
+    public function selectEstates()
+    {
+        global $db_controller;
+        return $db_controller->selectEstates();
+    }
+
+    public function getData($string)
+    {
+        global $db_controller;
+        return $db_controller->getData($string);
+    }
+
+    public function addEstate($seller_id, $title, $description, $cost, $type, $city, $locality, $area, $bedrooms, $floors, $created)
+    {
+        global $db_controller;
+        $db_controller->addEstate($seller_id, $title, $description, $cost, $type, $city, $locality, $area, $bedrooms, $floors, $created);
+    }
+
+    public function selectEstatesByType(mixed $type)
+    {
+        global $db_controller;
+        return $db_controller->selectEstatesByType($type);
+    }
+
+    public function selectEstatesByTypeWithMaxArea(mixed $type)
+    {
+        global $db_controller;
+        return $db_controller->selectEstatesByTypeWithMaxArea($type);
     }
 }
 

@@ -3,7 +3,7 @@ global $db;
 $servername = "localhost";
 $username = "root";
 $password = "";
-$database = "realtor_office_v3";
+$database = "realtor_office";
 
 
 $db = mysqli_connect($servername, $username, $password, $database);

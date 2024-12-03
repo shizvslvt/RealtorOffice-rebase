@@ -28,7 +28,9 @@ require_once CLASSES_PATH . '/User.php';
 require_once CLASSES_PATH . '/Realtor.php';
 require_once CLASSES_PATH . '/Estate.php';
 require_once CLASSES_PATH . '/Chats.php';
-require_once CLASSES_PATH . '/Logs.php';
+require_once CLASSES_PATH . '/Log.php';
+require_once CLASSES_PATH . '/Message.php';
+require_once CLASSES_PATH . '/ControlPanel.php';
 require_once CONTROLLERS_PATH . '/DatabaseController.php';
 
 
@@ -36,18 +38,16 @@ require_once CONTROLLERS_PATH . '/DatabaseController.php';
 // setup
 // ---------------------------------------------------
 $theme = Theme::templater();
-
 $user = new User();
 $auth = new Auth();
-$realtors = new Realtor();
+$realtor = new Realtor();
 $estate = new Estate();
 $chats = new Chats();
-$logs = new Logs();
-
+$log = new Log();
+$message = new Message();
+$control_panel = new ControlPanel();
 $db_controller = new DatabaseController();
 
 $admins_id = array('1', '23');
 
 $access_level = $user->getAccessLevel();
-
-

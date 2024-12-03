@@ -58,7 +58,7 @@
         </div>
     </a>
 
-    {if $status != "realtor"}
+    {if $status != "realtor" || isset($status)}
         {if $status == "by-id"}
             <div class="estate-button-container">
                 {if $chat_id}
@@ -77,7 +77,7 @@
                     <button>Accept</button>
                 </a>
             </div>
-        {elseif $status == "buy" && $buyer && $checksold}
+        {elseif $status == "buy" && $buyer && !$checksold}
             <div class="estate-button-container">
                 <a href="?p=buy-estate&id={$estate.id}">
                     <button>Buy</button>

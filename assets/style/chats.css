@@ -94,6 +94,7 @@
 }
 
 .chat-estate-title {
+    height: 38px;
     border-bottom: 1px solid var(--main-text-color);
     box-sizing: border-box;
     padding-bottom: 7px;

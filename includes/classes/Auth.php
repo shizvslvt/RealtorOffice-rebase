@@ -6,7 +6,7 @@ class Auth
     {
         global $db_controller;
         $user = $db_controller->login($mail, $password);
-        if ($user) {
+        if ($db_controller->login($mail, $password)) {
             setcookie("uid", $user, time() + 3600);
             return true;
         }

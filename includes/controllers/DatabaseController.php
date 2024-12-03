@@ -177,20 +177,18 @@ class DatabaseController
             $sql = "SELECT e.id AS estate_id, e.title, e.seller_id, e.realtor_id, e.cost, d.buyer_id, d.time, d.id AS chat_id, d.sold
         FROM ro_chats AS d
         JOIN ro_estates AS e WHERE d.estate_id = e.id AND d.buyer_id = '$uid'
-        ORDER BY d.time DESC";
+        ORDER BY d.sold , d.time DESC";
         } elseif ($accessLevel === 1 && $c === 'sell') {
             $sql = "SELECT e.id AS estate_id, e.title, e.seller_id, e.realtor_id, e.cost, d.buyer_id, d.time, d.id AS chat_id, d.sold
         FROM ro_chats AS d
         JOIN ro_estates AS e WHERE d.estate_id = e.id AND e.seller_id = '$uid'
-        ORDER BY d.time DESC";
+        ORDER BY d.sold , d.time DESC";
         } elseif ($accessLevel === 2 && $c === 'sell') {
             $sql = "SELECT e.id AS estate_id, e.title, e.seller_id, e.realtor_id, e.cost, d.buyer_id, d.time, d.id AS chat_id, d.sold
         FROM ro_chats AS d
         JOIN ro_estates AS e WHERE d.estate_id = e.id AND e.realtor_id = '$uid'
-        ORDER BY d.time DESC";
+        ORDER BY d.sold, d.time DESC";
         } else {
-            echo "accessLevel: $accessLevel";
-            echo "<br> c: $c<br>";
             die("Error in getChatsByUID");
         }
         global $db;
@@ -203,7 +201,7 @@ class DatabaseController
     }
 
 
-    public function getMessages(mixed $id)
+    public function getMessages($id)
     {
         global $db;
         $sql = "SELECT * FROM ro_messages WHERE chat_id = '$id'";
@@ -227,13 +225,13 @@ class DatabaseController
     }
 
 
-    public function addLog($type, $link, $chat_id, $user_id, $desc)
+    public function addLog($type, $link, $chat_id, $user_id, $desc, $amount)
     {
         global $db;
         $time = date("Y-m-d H:i:s");
         $sql = "INSERT INTO ro_logs 
-                    (type, link, chat_id, user_id, time, `desc`) 
-            VALUES ('$type','$link','$chat_id','$user_id','$time','$desc')";
+                    (type, link, chat_id, user_id, `desc`, amount, time) 
+            VALUES ('$type','$link','$chat_id','$user_id','$desc','$amount','$time')";
 
         $db->query($sql);
     }
@@ -255,10 +253,8 @@ class DatabaseController
 
     public function buyEstate($estate_id)
     {
-        if (!$this->checkSoldEstate($estate_id)) die("Эта недвижимость была продана.");
-        global $db, $user;
+        global $db, $access_level;
         $uid = $_COOKIE['uid'];
-        $access_level = $user->getAccessLevel();
 
         if ($access_level == 1) {
             $check_sql = "SELECT * FROM ro_chats WHERE estate_id = '$estate_id' AND buyer_id = '$uid'";
@@ -270,75 +266,79 @@ class DatabaseController
                 $estate = $estate_result->fetch_assoc();
                 $chat_id = $this->getChatIdByEstateIdAndUID($estate_id, $uid);
 
-                $cost = $estate['cost'];
+                $estate_cost = $estate['cost'];
                 $realtor_id = $estate['realtor_id'];
                 $seller_id = $estate['seller_id'];
 
-                $balance = $this->getBalance($uid);
+                $buyer_balance = $this->getBalance($uid);
 
-                global $logs;
-                if ($balance >= $cost) {
+                global $log;
+                if ($buyer_balance >= $estate_cost) {
                     $realtor_sql = "SELECT percent FROM ro_realtors WHERE id = '$realtor_id'";
                     $realtor_result = $db->query($realtor_sql);
                     $realtor = $realtor_result->fetch_assoc();
 
                     $percent = $realtor['percent'];
-                    $realtor_balance = $cost * ($percent / 100);
-                    $seller_balance = $cost - $realtor_balance;
+                    $realtor_tax = $estate_cost * ($percent / 100);
+                    $seller_part = $estate_cost - $realtor_tax;
 
                     $time = date("Y-m-d H:i:s");
-
                     $db->begin_transaction();
 
                     try {
-                        $logs->addLog('transaction', '?p=buy-estate&id=' . $estate_id, $chat_id, $uid,
-                            "Пользователь $uid начал покупку недвижимости $estate_id стоимостью $cost."
+                        $log->addLog('transaction', '?p=buy-estate&id=' . $estate_id, $chat_id, $uid,
+                            "Пользователь $uid начал покупку недвижимости $estate_id стоимостью $estate_cost.", $estate_cost
                         );
 
                         $db->query("UPDATE ro_chats SET sold = '$time' WHERE estate_id = '$estate_id' AND buyer_id = '$uid'");
                         $db->query("UPDATE ro_estates SET archived = 1 WHERE id = '$estate_id'");
 
                         // Покупатель
-                        $prev_balance = $balance;
-                        $this->EditBalance($uid, -$cost);
-                        $logs->addLog('transaction', '?p=buy-estate&id=' . $estate_id, $chat_id, $uid,
-                            "Баланс изменен с $prev_balance на " . ($prev_balance - $cost)
+                        $prev_balance = $buyer_balance;
+                        $this->EditBalance($uid, -$estate_cost);
+                        $log->addLog('transaction', '?p=buy-estate&id=' . $estate_id, $chat_id, $uid,
+                            "Баланс покупателя $uid изменен с $prev_balance на " . ($prev_balance - $estate_cost), $estate_cost
                         );
 
                         // Риэлтор
                         $realtor_prev_balance = $this->getBalance($realtor_id);
-                        $this->EditBalance($realtor_id, $realtor_balance);
-                        $logs->addLog('transaction', '?p=buy-estate&id=' . $estate_id, $chat_id, $realtor_id,
-                            "Баланс риэлтора $realtor_id изменен с $realtor_prev_balance на " . ($realtor_prev_balance + $realtor_balance)
+                        $this->EditBalance($realtor_id, $realtor_tax);
+                        $log->addLog('transaction', '?p=buy-estate&id=' . $estate_id, $chat_id, $realtor_id,
+                            "Баланс риэлтора $realtor_id изменен с $realtor_prev_balance на " . ($realtor_prev_balance + $realtor_tax),
+                            $realtor_tax
                         );
 
                         // Продавец
                         $seller_prev_balance = $this->getBalance($seller_id);
-                        $this->EditBalance($seller_id, $seller_balance);
-                        $logs->addLog('transaction', '?p=buy-estate&id=' . $estate_id, $chat_id, $seller_id,
-                            "Баланс продавца $seller_id изменен с $seller_prev_balance на " . ($seller_prev_balance + $seller_balance)
+                        $this->EditBalance($seller_id, $seller_part);
+                        $log->addLog('transaction', '?p=buy-estate&id=' . $estate_id, $chat_id, $seller_id,
+                            "Баланс продавца $seller_id изменен с $seller_prev_balance на " . ($seller_prev_balance + $seller_part),
+                            $seller_part
                         );
 
-                        $logs->addLog('sale', '?p=buy-estate&id=' . $estate_id, $chat_id, $uid,
-                            "Недвижимость $estate_id была продана пользователем $seller_id пользователю $uid."
+                        $log->addLog('sale', '?p=buy-estate&id=' . $estate_id, $chat_id, $uid,
+                            "Недвижимость $estate_id была продана пользователем $seller_id пользователю $uid.",
+                            $estate_cost
                         );
 
                         $db->commit();
                     } catch (Exception $e) {
                         $db->rollback();
-                        $logs->addLog('error', '?p=buy-estate&id=' . $estate_id, $chat_id, $uid,
-                            "Ошибка: " . $e->getMessage()
+                        $log->addLog('error', '?p=buy-estate&id=' . $estate_id, $chat_id, $uid,
+                            "Ошибка: " . $e->getMessage(), null
                         );
                         die("Error: " . $e->getMessage());
                     }
                 } else {
-                    echo "У вас недостаточно средств для покупки этой недвижимости.";
-                    $logs->addLog('error', '?p=buy-estate&id=' . $estate_id, $chat_id, $uid,
-                        "У пользователя $uid недостаточно средств для покупки недвижимости $estate_id стоимостью $cost."
+                    $log->addLog('error', '?p=buy-estate&id=' . $estate_id, $chat_id, $uid,
+                        "У пользователя $uid недостаточно средств для покупки недвижимости $estate_id стоимостью $estate_cost.",
+                        $buyer_balance
                     );
+                    die("У вас недостаточно средств для покупки этой недвижимости.");
                 }
             }
         }
+        header('Location: ?p=buy-estate&id=' . $estate_id);
     }
 
 
@@ -350,7 +350,7 @@ class DatabaseController
         return $result->fetch_assoc()['cost'];
     }
 
-    public function getBuyerIdByEstateIdAndUID($estate_id, mixed $uid)
+    public function getBuyerIdByEstateIdAndUID($estate_id, $uid)
     {
         global $db;
         $sql = "SELECT buyer_id FROM ro_chats WHERE estate_id = '$estate_id' AND buyer_id = '$uid'";
@@ -380,12 +380,12 @@ class DatabaseController
     public function checkSoldEstate($id)
     {
         global $db;
-        $sql = "SELECT sold FROM ro_chats WHERE estate_id = '$id' AND sold IS NULL LIMIT 1";
+        $sql = "SELECT sold FROM ro_chats WHERE estate_id = '$id' AND sold IS NOT NULL LIMIT 1";
         $result = $db->query($sql);
         return $result->num_rows > 0;
     }
 
-    public function getEstateIdByChatId(mixed $chat_id)
+    public function getEstateIdByChatId($chat_id)
     {
         global $db;
         $sql = "SELECT estate_id FROM ro_chats WHERE id = '$chat_id' LIMIT 1";
@@ -393,5 +393,334 @@ class DatabaseController
         return $result->fetch_assoc()['estate_id'];
     }
 
+    public function checkEstateAccessLevelForBuyer($id)
+    {
+        global $db, $access_level;
 
+        if ($access_level != 1) return true;
+        $uid = $_COOKIE['uid'];
+        $sql = "
+        SELECT * FROM ro_estates AS e WHERE e.seller_id = '$uid' AND e.id = '$id' LIMIT 1;
+        ";
+        return $db->query($sql)->num_rows > 0;
+    }
+
+    public function selectLogs()
+    {
+        global $db;
+        $query = "SELECT * FROM ro_logs";
+        $result = $db->query($query);
+        $logs = array();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $logs[] = $row;
+            }
+        }
+        return $logs;
+    }
+
+    public function selectTopRealtorsByYear($year)
+    {
+        global $db;
+        $query = "SELECT
+	                r.id,
+	                u.`name`,
+	                COUNT(*) AS count,
+	                $year AS year
+                FROM ro_realtors AS r
+                JOIN ro_users AS u ON r.id = u.id
+                JOIN ro_estates AS e ON e.realtor_id = r.id
+                JOIN ro_chats AS c ON c.estate_id = e.id AND YEAR(c.sold) = '$year'
+                GROUP BY r.id
+                HAVING
+	                count = (
+		                        SELECT
+			                        MAX(TotalSales)
+		                        FROM
+			                    (SELECT
+				                    COUNT(*) AS TotalSales
+			                    FROM ro_realtors AS r1
+			                    JOIN ro_users AS u1 ON r1.id = u1.id
+			                    JOIN ro_estates AS e1 ON e1.realtor_id = r1.id
+			                    JOIN ro_chats AS c1 ON c1.estate_id = e1.id AND YEAR(c1.sold) = '$year'
+			                    GROUP BY r1.id
+			                    ) AS MaxResult
+	                        );";
+        $result = $db->query($query);
+        $realtors = array();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $realtors[] = $row;
+            }
+        }
+        return $realtors;
+    }
+
+    public function selectTopRealtorsByBetweenDates($start_date, $finish_date)
+    {
+        global $db;
+        $query = "SELECT
+	                r.id,
+	                u.`name`,
+	                COUNT(*) AS count,
+	                '$start_date' AS start_date,
+                    '$finish_date' AS finish_date
+                FROM ro_realtors AS r
+                JOIN ro_users AS u ON r.id = u.id
+                JOIN ro_estates AS e ON e.realtor_id = r.id
+                JOIN ro_chats AS c ON c.estate_id = e.id AND c.sold BETWEEN '$start_date' AND '$finish_date'
+                GROUP BY r.id
+                HAVING
+	                count = (
+		                        SELECT
+			                        MAX(TotalSales)
+		                        FROM
+			                    (SELECT
+				                    COUNT(*) AS TotalSales
+			                    FROM ro_realtors AS r1
+			                    JOIN ro_users AS u1 ON r1.id = u1.id
+			                    JOIN ro_estates AS e1 ON e1.realtor_id = r1.id
+			                    JOIN ro_chats AS c1 ON c1.estate_id = e1.id AND c1.sold BETWEEN '$start_date' AND '$finish_date'
+			                    GROUP BY r1.id
+			                    ) AS MaxResult
+	                        );";
+        $result = $db->query($query);
+        $realtors = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $realtors[] = $row;
+            }
+        }
+        return $realtors;
+    }
+
+    public function selectRealtor()
+    {
+        global $db;
+        $query = "SELECT 
+                r.id, u.`name`, u.mail, r.percent, r.experience, u.balance, u.time
+                FROM 
+                ro_realtors AS r
+                JOIN ro_users AS u ON r.id = u.id";
+        $result = $db->query($query);
+        $realtors = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $realtors[] = $row;
+            }
+        }
+        return $realtors;
+    }
+
+    public function selectRealtorById(mixed $id)
+    {
+        global $db;
+        $query = "SELECT 
+                r.id, u.`name`, u.mail, r.percent, r.experience, u.balance, u.time
+                FROM 
+                ro_realtors AS r
+                JOIN ro_users AS u ON r.id = u.id
+                WHERE r.id = $id";
+        $result = $db->query($query);
+        $realtor = $result->fetch_assoc();
+        return $realtor;
+    }
+
+    public function updateRealtor($id, $name, $mail, $percent, $experience, $balance, $time)
+    {
+        global $db;
+        $db->begin_transaction();
+        $sql1 = "UPDATE ro_realtors SET 
+ percent = $percent,
+ experience = '$experience'
+WHERE id = $id";
+        $result1 = $db->query($sql1);
+        $sql2 = "
+UPDATE ro_users SET name = '$name',
+ mail = '$mail',
+ balance = $balance, time = '$time'
+WHERE id = $id";
+        $result2 = $db->query($sql2);
+        if ($result1 && $result2) $db->commit();
+        else $db->rollback();
+        return $result1 && $result2;
+    }
+
+    public function selectEstates()
+    {
+        global $db;
+        $query = "SELECT
+                e.id,
+                u_s.id AS seller_id,
+                u_s.`name` AS seller_name,
+                u_s.mail AS seller_mail,
+                u_r.id AS realtor_id,
+                u_r.`name` AS realtor_name,
+                u_r.mail AS realtor_mail,
+                e.title,
+                e.cost,
+                e.time,
+                e.accepted,
+                e.archived,
+                e.`description`,
+                cities.name AS city_name,  
+                types.name AS type_name,
+                localities.name AS locality_name,
+                e.area,
+                e.bedrooms,
+                e.floors
+                FROM ro_estates AS e
+                JOIN list_cities AS cities ON e.city_id = cities.id
+                JOIN list_types AS types ON e.type_id = types.id
+                JOIN list_localities AS localities ON e.locality_id = localities.id
+                JOIN ro_users AS u_s ON e.seller_id = u_s.id
+                JOIN ro_users AS u_r ON e.realtor_id = u_r.id
+                ORDER BY e.time DESC";
+        $result = $db->query($query);
+        $estates = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $estates[] = $row;
+            }
+        }
+        return $estates;
+    }
+
+    public function selectUsers()
+    {
+        global $db;
+        $query = "SELECT * FROM ro_users";
+        $result = $db->query($query);
+        $users = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $users[] = $row;
+            }
+        }
+        return $users;
+    }
+
+    public function getData($string)
+    {
+        global $db;
+        $data = [];
+        $result = $db->query("SELECT * FROM $string");
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
+    public function addEstate($seller_id, $title, $description, $cost, $type, $city, $locality, $area, $bedrooms, $floors, $created)
+    {
+        global $db;
+        $seller_id = (int)$seller_id;
+        $cost = (double)$cost;
+        $type = (int)$type;
+        $city = (int)$city;
+        $locality = (int)$locality;
+        $area = (double)$area;
+        $bedrooms = (int)$bedrooms;
+        $floors = (int)$floors;
+        $created = $db->real_escape_string($created);
+        $title = $db->real_escape_string($title);
+        $description = $db->real_escape_string($description);
+        $sql = "INSERT INTO ro_estates (seller_id, realtor_id ,title, cost, `time`, `description`, city_id, locality_id, type_id, area, bedrooms, floors)
+            VALUES ($seller_id, null, '$title', $cost, '$created', '$description', $city, $locality, $type, $area, $bedrooms, $floors)";
+        $db->query($sql);
+    }
+
+    public function getMessagesByUserIdAndMonth($user_id, $month)
+    {
+        global $db;
+        $query = "SELECT * FROM ro_messages WHERE user_id = $user_id AND MONTH(time) = $month";
+        $result = $db->query($query);
+        $messages = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $messages[] = $row;
+            }
+        }
+        return $messages;
+    }
+
+    public function selectEstatesByType(mixed $type)
+    {
+        global $db;
+        $query = "SELECT
+                COUNT(*) AS EstatesCount,
+                SUM(e.area) AS AreaCount,
+                lt.name
+                FROM ro_estates AS e
+                JOIN list_types lt ON lt.id = $type
+                WHERE e.type_id = $type";
+        $result = $db->query($query);
+        $estates = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $estates[] = $row;
+            }
+        }
+        return $estates;
+    }
+
+    public function selectEstatesByTypeWithMaxArea(mixed $type)
+    {
+        global $db;
+        $query = "SELECT 
+                e.id, 
+                e.title,
+                e.cost,
+                e.seller_id,
+                e.realtor_id,
+                lt.`name` AS 'type',
+                lc.`name` AS 'city',
+                ll.`name` AS 'locality',
+                e.bedrooms,
+                e.floors,
+                e.time,
+                e.area AS max_area
+            FROM ro_estates AS e
+            JOIN list_types lt ON lt.id = $type
+            JOIN list_cities lc ON lc.id = e.city_id
+            JOIN list_localities ll ON ll.id = e.locality_id
+            WHERE e.type_id = $type
+            AND e.area = (
+                SELECT 
+                    MAX(area)
+                FROM ro_estates
+                WHERE type_id = $type
+                LIMIT 1
+                );";
+        $result = $db->query($query);
+        $estates = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $estates[] = $row;
+            }
+        }
+        return $estates;
+    }
+
+    public function getChatsByUserId($user_id)
+    {
+        global $db;
+        $query = "SELECT 
+                    c.id, c.estate_id, e.seller_id, e.realtor_id, c.buyer_id, c.time, c.sold
+                    FROM ro_chats AS c
+                    JOIN ro_estates AS e ON c.estate_id = e.id 
+                    WHERE (c.buyer_id = $user_id OR 
+                    e.seller_id = $user_id OR 
+                    e.realtor_id = $user_id)";
+        $result = $db->query($query);
+        $chats = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $chats[] = $row;
+            }
+        }
+        return $chats;
+    }
 }

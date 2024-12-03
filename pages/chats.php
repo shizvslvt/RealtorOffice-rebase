@@ -11,6 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $chats->sendMessage($uid, $chat_id, $message);
     header('Location: ?p=chats&c='. $_GET['c'] . '&id=' . $chat_id);
 } elseif (isset($_GET['a']) && $_GET['a'] == 'create-chat') {
+    global $estate;
+    if($estate->checkEstateAccessLevelForBuyer($_GET['id'])) die('dont have access');
     $chat_id = $chats->createChat($_GET['id'], $_COOKIE['uid']);
     header('Location: ?p=chats&id=' . $chat_id);
 }elseif (!isset($_GET['id'])) {

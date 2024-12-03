@@ -1,13 +1,13 @@
 <?php
 
 global $estate;
+if($estate->checkEstateAccessLevelForBuyer($_GET['id'])) die('dont have access');
+if($estate->checkSoldEstate($_GET['id'])) die("Эта недвижимость была продана.");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (($_GET['a']) != "buy") die("null 'a' in url");
-    if(!$estate->checkSoldEstate($_POST['id'])) die("Эта недвижимость была продана.");
     $estate->buyEstate($_POST['id']);
 }
-    if(!$estate->checkSoldEstate($_GET['id'])) die("Эта недвижимость была продана.");
 global $theme, $user;
 echo '<div class="buy-estate-container">';
 $estate->displayEstate($_GET['id']);

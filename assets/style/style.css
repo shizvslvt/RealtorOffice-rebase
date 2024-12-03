@@ -1,5 +1,5 @@
 :root {
-    --main-black: rgb(19, 19, 25);
+    --main-black: rgb(21, 21, 21);
     --main-background-color: #1C1C1E;
     --main-block-background-color: rgba(255, 255, 255, 0.07);
     --main-white: #fff;
@@ -15,7 +15,7 @@
     --main-button-color: #505050;
 
 
-    --theme-color-boxShadow: rgba(0, 0, 0, 0.65);
+    --theme-color-boxShadow: rgba(0, 0, 0, 0.2);
 
     --main-shadow: 5px 5px 10px var(--theme-color-boxShadow);
 
@@ -37,9 +37,24 @@ body {
     background: var(--main-background-color);
     border-radius: 8px;
     box-sizing: border-box;
-
     -webkit-box-shadow: var(--main-shadow);
 }
 
 
 
+table {
+    width: 100%;
+}
+th, td {
+    padding: 2px;
+    text-align: left;
+    border-bottom: 1px solid var(--main-text-color);
+}
+
+th {
+    color: var(--main-text-hover-color);
+}
+
+td {
+    color: var(--main-text-color);
+}

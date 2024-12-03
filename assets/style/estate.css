@@ -151,17 +151,10 @@ button:hover, button:focus {
 .estates-grid::-webkit-scrollbar {
     width: 8px;
 }
-
-.estates-grid::-webkit-scrollbar-thumb {
-    background-color: var(--main-block-background-color);
-    border-radius: 10px;
-}
-
-.estates-grid::-webkit-scrollbar-track {
+.estates-grid::-webkit-scrollbar-track, .estates-grid::-webkit-scrollbar-thumb {
     background-color: var(--main-block-background-color);
     border-radius: 8px;
 }
-
 .estates-grid::-webkit-scrollbar-thumb:hover {
     background-color: var(--additionally-color);
 }
@@ -172,4 +165,71 @@ button:hover, button:focus {
 }
 
 
+.estate-div {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: var(--main-block-background-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
 
+.estate-div h2 {
+    margin: 5px;
+    text-align: center;
+    color: var(--main-text-color);
+    border-bottom: 1px solid var(--main-text-color);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-box {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.user-box label {
+    font-size: 13px;
+    margin-bottom: 5px;
+    color: var(--main-text-color);
+}
+
+.user-box input {
+    color: var(--main-text-hover-color);
+    background: var(--main-block-background-color);
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.user-box select {
+    background: var(--main-block-background-color);
+    color: var(--main-text-hover-color);
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+    appearance: none;
+}
+
+.user-box select option {
+    background-color: var(--main-background-color);
+}
+
+.user-box input:focus,
+.user-box select:focus {
+    color: var(--main-text-hover-color);
+    background: var(--main-block-background-color);
+    border-color: var(--main-text-hover-color);
+    box-shadow: 0 0 4px var(--theme-color-boxShadow);
+}

@@ -15,11 +15,8 @@ $page = match ($page) {
     'waiting-deals' => 'waiting-deals',
     'chats' => 'chats',
     'buy-estate' => 'buy-estate',
-
-
-//    'add-estate' => 'add-estate',
-//    'edit-estate' => 'edit-estate',
-//    'control-panel' => 'control-panel',
+    'control-panel' => 'control-panel',
+    'add-estate' => 'add-estate',
 
     default => '404',
 };
@@ -29,26 +26,24 @@ include_once PAGES_PATH . "/{$page}.php";
 echo "</div>";
 
 
-
-
-
-
-echo "<div class='footer' style='position: fixed; bottom: 20px'>";
+echo "<div class='footer' style='position: fixed; bottom: 20px; left: 20px'>";
 echo $time = date('Y-m-d H:i:s') . " | ";
-if(isset($_COOKIE['uid'])) {
-    echo "uid: " . $_COOKIE['uid']. " | ";
-    global $access_level;
-    switch($access_level) {
-        case 3:
-            echo "Admin";
-            break;
-        case 2:
-            echo "Realtor";
-            break;
-        case 1:
-            echo "User";
-            break;
-    }
+if (isset($_COOKIE['uid'])) echo "uid: " . $_COOKIE['uid'] . " | ";
+global $access_level;
+switch ($access_level) {
+    case 3:
+        echo "Admin";
+        break;
+    case 2:
+        echo "Realtor";
+        break;
+    case 1:
+        echo "User";
+        break;
+    case 0:
+        echo "Guest";
+        break;
 }
+
 echo "</div>";
 
