@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2024 at 08:28 PM
+-- Generation Time: Dec 17, 2024 at 02:47 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -175,15 +175,16 @@ INSERT INTO `ro_estates` (`id`, `seller_id`, `realtor_id`, `title`, `cost`, `tim
 (5, 14, 11, 'Современный пентхаус с видом на город', 60000, '2022-07-11 08:39:54', '2022-07-11 10:08:49', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 4, 1, 2, 95, 2, 12),
 (6, 3, 11, 'Студия с панорамными окнами в центре', 40000, '2022-07-16 14:27:49', '2022-07-17 09:03:31', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 10, 1, 2, 80, 2, 3),
 (7, 15, 7, 'Квартира в историческом центре города', 77000, '2022-08-01 12:20:45', '2022-08-04 12:20:45', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 1, 1, 2, 115, 2, 2),
-(8, 14, 11, 'Большая квартира с террасой и видом на парк', 58000, '2022-09-09 15:44:25', '2022-09-10 09:11:31', 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 4, 1, 2, 95, 4, 4),
+(8, 14, 11, 'Большая квартира с террасой и видом на парк', 58000, '2022-09-09 15:44:25', '2022-09-10 09:11:31', 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem.', 4, 1, 2, 95, 4, 4),
 (9, 6, 7, 'Элитный загородный дом с бассейном', 147000, '2022-10-15 10:21:18', '2022-10-18 14:13:08', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 14, 2, 1, 260, 6, 3),
 (10, 9, 11, 'Участок для строительства дома с возможностью садоводства', 18000, '2022-10-27 16:37:42', '2022-11-01 10:28:33', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 7, 2, 3, 180, 0, 0),
 (11, 19, 18, 'Новый дом с большим участком земли', 86000, '2023-02-05 21:53:13', '2023-02-06 09:06:26', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 11, 2, 1, 200, 4, 2),
 (12, 3, 11, 'Квартира в жилом комплексе с бассейном', 37000, '2023-03-10 09:46:22', '2023-03-14 18:32:28', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 10, 3, 2, 85, 2, 6),
 (13, 6, 18, 'Ухоженный домик с подвалом около центра', 49000, '2023-03-18 11:09:11', '2023-03-19 12:09:41', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 14, 2, 1, 125, 3, 2),
 (14, 15, 11, 'Новый современный дом в престижном районе', 205000, '2023-03-22 12:32:31', '2023-03-26 09:32:31', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 4, 1, 1, 260, 4, 2),
-(15, 14, 11, 'Пентхаус с видом на город', 125000, '2023-06-15 18:53:13', '2023-06-20 14:15:42', 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 1, 1, 1, 230, 3, 7),
-(16, 19, NULL, 'Уютная квартира с террасой', 56000, '2023-11-06 13:42:32', NULL, 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 11, 2, 2, 100, 2, 4);
+(15, 14, 11, 'Пентхаус с видом на город', 125000, '2023-06-15 18:53:13', '2023-06-20 14:15:42', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 1, 1, 1, 230, 3, 7),
+(16, 3, 7, 'Квартира с уютным видом на море', 47000, '2023-09-11 13:47:18', '2023-09-14 09:37:29', 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 4, 1, 2, 150, 3, 6),
+(17, 19, NULL, 'Уютная квартира с террасой', 56000, '2023-11-06 13:42:32', NULL, 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis. Nam id vulputate odio. Cras molestie quis ante et vestibulum. Nullam viverra leo quis libero vulputate ultricies sit amet et lorem. ', 11, 2, 2, 100, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -526,7 +527,7 @@ ALTER TABLE `ro_chats`
 -- AUTO_INCREMENT for table `ro_estates`
 --
 ALTER TABLE `ro_estates`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `ro_logs`
