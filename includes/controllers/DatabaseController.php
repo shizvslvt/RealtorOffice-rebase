@@ -26,7 +26,8 @@ class DatabaseController
                 FROM ro_estates AS e
                 JOIN list_cities AS cities ON e.city_id = cities.id
                 JOIN list_types AS types ON e.type_id = types.id
-                WHERE e.accepted IS NOT NULL AND e.archived = 0
+                JOIN ro_chats AS c ON e.id = c.estate_id
+                WHERE e.accepted IS NOT NULL AND e.archived = 0 AND c.sold IS NULL
                 ORDER BY e.time DESC";
         $result = $db->query($sql);
         $estates = [];
@@ -103,7 +104,8 @@ class DatabaseController
                     e.description, e.area, e.bedrooms, e.floors,
                        cities.name AS city_name, 
                        localities.name AS locality_name, 
-                       types.name AS type_name
+                       types.name AS type_name,
+                       e.city_id, e.locality_id,e.type_id, e.archived
                 FROM ro_estates AS e
                 JOIN list_cities AS cities ON e.city_id = cities.id
                 JOIN list_localities AS localities ON e.locality_id = localities.id
@@ -353,7 +355,7 @@ class DatabaseController
     public function getBuyerIdByEstateIdAndUID($estate_id, $uid)
     {
         global $db;
-        $sql = "SELECT buyer_id FROM ro_chats WHERE estate_id = '$estate_id' AND buyer_id = '$uid'";
+        $sql = "SELECT 1 FROM ro_chats WHERE estate_id = '$estate_id' AND buyer_id = '$uid'";
         $result = $db->query($sql);
         return $result->fetch_assoc();
     }
@@ -363,7 +365,7 @@ class DatabaseController
         global $db;
         $sql = "SELECT id FROM ro_chats WHERE estate_id = '$estate_id' AND buyer_id = '$uid'";
         $result = $db->query($sql);
-        if ($result->num_rows > 0) return $result->fetch_assoc()['id'];
+        if ($result->num_rows > 0) return $result->fetch_assoc();
 
         return null;
     }
@@ -630,6 +632,8 @@ WHERE id = $id";
         $sql = "INSERT INTO ro_estates (seller_id, realtor_id ,title, cost, `time`, `description`, city_id, locality_id, type_id, area, bedrooms, floors)
             VALUES ($seller_id, null, '$title', $cost, '$created', '$description', $city, $locality, $type, $area, $bedrooms, $floors)";
         $db->query($sql);
+
+         return $db->insert_id;
     }
 
     public function getMessagesByUserIdAndMonth($user_id, $month)
@@ -722,5 +726,47 @@ WHERE id = $id";
             }
         }
         return $chats;
+    }
+
+    public function editEstate($id, $title, $cost, $archived, $description, $city, $locality, $type,  $area, $bedrooms, $floors)
+    {
+        global $db;
+        $query = "UPDATE ro_estates SET 
+            title = '$title',
+            cost = $cost,
+            archived = $archived,
+            description = '$description',
+            city_id = $city,
+            locality_id = $locality,
+            type_id = $type,
+            area = $area,
+            bedrooms = $bedrooms,
+            floors = $floors
+            WHERE id = $id";
+        $db->query($query);
+    }
+
+    public function CompareSellerIdByEstateIdAndUID($estate_id, $uid)
+    {
+        global $db;
+        $query = "SELECT seller_id FROM ro_estates WHERE id = $estate_id AND seller_id = $uid";
+        $result = $db->query($query);
+        $estates = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $estates[] = $row;
+            }
+        }
+        return $estates;
+    }
+
+    public function checkEstateAccessLevelForSeller($estate_id, $uid)
+    {
+        global $access_level;
+        if($access_level != 1) return false;
+        global $db;
+        $query = "SELECT seller_id FROM ro_estates WHERE id = $estate_id AND seller_id = $uid";
+        $result = $db->query($query);
+        return ($result->num_rows > 0);
     }
 }

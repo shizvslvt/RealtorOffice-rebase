@@ -26,7 +26,7 @@
             <a href="?p=register"><div class="header-item">Register</div></a>
         {else}
             <a href="?p=profile"><div class="header-item">Profile</div></a>
-            <a href="?p=logout"><div class="header-item">Logout</div></a>
+            <a href="?p=logout"><div class="header-item red">Logout</div></a>
         {/if}
     </div>
 </header>

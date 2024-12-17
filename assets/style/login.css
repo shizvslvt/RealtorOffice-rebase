@@ -20,7 +20,6 @@
 }
 
 form {
-    padding: 20px 20px 0 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,8 +28,8 @@ form {
 .login .user-box {
     position: relative;
     width: 235px;
-    margin-bottom: 20px;
-    margin-top: 20px;
+    margin-top: 2%;
+    margin-bottom: 6%;
 }
 
 .login .user-box input {

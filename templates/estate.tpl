@@ -83,6 +83,12 @@
                     <button>Buy</button>
                 </a>
             </div>
+        {elseif $status == "edit"}
+            <div class="estate-button-container">
+                <a href="?p=edit-estate&id={$estate.id}">
+                    <button>Edit</button>
+                </a>
+            </div>
         {/if}
     {/if}
 </div>

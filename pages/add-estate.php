@@ -1,7 +1,8 @@
 <?php
 global $access_level;
 
-if ($access_level == 0) die('You dont have access to this page');
+if ($access_level == 0 or $access_level == 2) die('You dont have access to this page');
+global $realtor;
 if (isset($_POST['title']) &&
     isset($_POST['description']) &&
     isset($_POST['cost']) &&
@@ -23,7 +24,8 @@ if (isset($_POST['title']) &&
         $floors = $_POST['floors'];
         $created = date('Y-m-d H:i:s');
         global $estate;
-        $estate->addEstate($seller_id, $title, $description, $cost, $type, $city, $locality, $area, $bedrooms, $floors, $created);
+        $estate_id = $estate->addEstate($seller_id, $title, $description, $cost, $type, $city, $locality, $area, $bedrooms, $floors, $created);
+        header('Location: ?p=estate&id=' . $estate_id);
     }
 
 
@@ -36,9 +38,5 @@ $locations = [
 ];
 
 $theme->assign('locations', $locations);
-
-
-
-
 
 $theme->display('add-estate.tpl');

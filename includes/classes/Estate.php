@@ -17,20 +17,27 @@ class Estate
         echo '</div>';
     }
 
+    public function getEstateById($estate_id)
+    {
+        global $db_controller;
+        return $db_controller->getEstateById($estate_id);
+    }
+
     public function displayEstate($estate_id): void
     {
         global $theme, $db_controller, $access_level;
-        $estate = $db_controller->getEstateById($estate_id);
-        if(!$estate) die("Estate not found");
+        $estate = $this->getEstateById($estate_id);
+        if (!$estate) die("Estate not found");
         $status = 'none';
         if ($access_level == 1) {
             $chat_id = $db_controller->getChatIdByEstateIdAndUID($estate_id, $_COOKIE['uid']);
             $theme->assign('chat_id', $chat_id);
             $status = 'by-id';
+            if($db_controller->CompareSellerIdByEstateIdAndUID($estate_id, $_COOKIE['uid'])) $status = 'edit';
         } elseif ($access_level == 2) {
             $status = 'realtor';
         }
-        if($db_controller->checkSoldEstate($estate_id)) $status = 'sold';
+        if ($db_controller->checkSoldEstate($estate_id)) $status = 'sold';
 
         $theme->assign('estate', $estate);
         $theme->assign('status', $status);
@@ -127,7 +134,7 @@ class Estate
     public function addEstate($seller_id, $title, $description, $cost, $type, $city, $locality, $area, $bedrooms, $floors, $created)
     {
         global $db_controller;
-        $db_controller->addEstate($seller_id, $title, $description, $cost, $type, $city, $locality, $area, $bedrooms, $floors, $created);
+        return $db_controller->addEstate($seller_id, $title, $description, $cost, $type, $city, $locality, $area, $bedrooms, $floors, $created);
     }
 
     public function selectEstatesByType(mixed $type)
@@ -140,6 +147,18 @@ class Estate
     {
         global $db_controller;
         return $db_controller->selectEstatesByTypeWithMaxArea($type);
+    }
+
+    public function editEstate($id, $title, $cost, $archived, $description, $city, $locality, $type, $area, $bedrooms, $floors)
+    {
+        global $db_controller;
+        $db_controller->editEstate($id, $title, $cost, $archived, $description, $city, $locality, $type, $area, $bedrooms, $floors);
+    }
+
+    public function checkEstateAccessLevelForSeller($estate_id, $uid)
+    {
+        global $db_controller;
+        return $db_controller->checkEstateAccessLevelForSeller($estate_id, $uid);
     }
 }
 

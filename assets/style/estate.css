@@ -79,6 +79,7 @@ button:hover, button:focus {
     justify-content: space-between;
     width: 48%;
 }
+
 .estate-bottom-row {
     display: flex;
     justify-content: space-between;
@@ -119,6 +120,7 @@ button:hover, button:focus {
     .estates-grid .estate {
         width: calc(33.33% - 15px);
     }
+
     .estates-grid-single {
         width: calc(33.33% - 15px);
     }
@@ -129,6 +131,7 @@ button:hover, button:focus {
     .estates-grid .estate {
         width: calc(50% - 15px);
     }
+
     .estates-grid-single {
         width: calc(50% - 15px);
     }
@@ -138,6 +141,7 @@ button:hover, button:focus {
     .estates-grid {
         padding: 10px 10px 10px 0;
     }
+
     .estates-grid-single {
         width: 100%;
     }
@@ -151,10 +155,12 @@ button:hover, button:focus {
 .estates-grid::-webkit-scrollbar {
     width: 8px;
 }
+
 .estates-grid::-webkit-scrollbar-track, .estates-grid::-webkit-scrollbar-thumb {
     background-color: var(--main-block-background-color);
     border-radius: 8px;
 }
+
 .estates-grid::-webkit-scrollbar-thumb:hover {
     background-color: var(--additionally-color);
 }
@@ -176,11 +182,16 @@ button:hover, button:focus {
 }
 
 .estate-div h2 {
-    margin: 5px;
+    margin-top: 12px;
     text-align: center;
-    color: var(--main-text-color);
-    border-bottom: 1px solid var(--main-text-color);
+    padding-left: 5px;
+    height: 40px;
+    color: var(--main-white);
+    font-weight: bold;
+    overflow: hidden;
+    border-bottom: 1px solid var(--additionally-color);
 }
+
 
 form {
     display: flex;
@@ -188,10 +199,28 @@ form {
     gap: 10px;
 }
 
+
 .user-box {
     display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.item {
+    display: flex;
     flex-direction: column;
-    position: relative;
+    flex: 1 1 calc(100% - 10px);
+    box-sizing: border-box;
+}
+
+.item.half {
+    flex: 1 1 calc(50% - 10px);
+}
+
+.item.third {
+    flex: 1 1 calc(20%);
 }
 
 .user-box label {
@@ -200,7 +229,7 @@ form {
     color: var(--main-text-color);
 }
 
-.user-box input {
+.user-box input, textarea {
     color: var(--main-text-hover-color);
     background: var(--main-block-background-color);
     padding: 8px;
@@ -208,6 +237,14 @@ form {
     border-radius: 4px;
     outline: none;
     transition: border-color 0.2s ease-in-out;
+}
+.user-box select, input, textarea {
+    width: 100%;
+}
+
+.user-box textarea {
+    height: 100px;
+    resize: none;
 }
 
 .user-box select {
@@ -233,3 +270,53 @@ form {
     border-color: var(--main-text-hover-color);
     box-shadow: 0 0 4px var(--theme-color-boxShadow);
 }
+
+
+
+.checkbox-wrapper-4 .cbx {
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.checkbox-wrapper-4 .cbx:hover {
+    background: var(--main-block-background-color);
+}
+
+.checkbox-wrapper-4 .cbx span {
+    float: left;
+    vertical-align: middle;
+    transform: translate3d(0, 0, 0);
+}
+
+.checkbox-wrapper-4 .cbx span:first-child {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    transform: scale(1);
+    border: 1px solid var(--main-text-color);
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 1px rgba(0, 16, 75, 0.05);
+}
+
+.checkbox-wrapper-4 .cbx span:last-child {
+    padding-left: 8px;
+    line-height: 18px;
+}
+
+.checkbox-wrapper-4 .inp-cbx {
+    position: fixed;
+    visibility: hidden;
+}
+
+.checkbox-wrapper-4 .inp-cbx:checked + .cbx span:first-child {
+    background: var(--additionally-color);
+    border-color: var(--main-text-hover-color);
+}
+

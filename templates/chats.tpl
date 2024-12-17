@@ -38,8 +38,12 @@
 
             </div>
         {else}
-            <div class="no-chats-message">
-                No chats available.
+            <div class="chat-grid-items">
+                <div class="chats-grid-item sold">
+                    <div class="chat-estate-title">
+                        No chats available.
+                    </div>
+                </div>
             </div>
         {/if}
     </div>

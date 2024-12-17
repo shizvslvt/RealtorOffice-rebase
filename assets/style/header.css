@@ -35,3 +35,6 @@ header {
     left: 50%;
     transform: translateX(-50%);
 }
+.header-item.red:hover{
+    color: var(--lightred-color);
+}
